@@ -1,0 +1,10 @@
+*.zip
+*.pth
+imgdata/
+savedmodel/
+train.record
+test.record
+x/
+*.tgz
+*.tar.gz
+model_faster_rcnn_resnet152_1024/

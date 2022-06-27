@@ -1,0 +1,26 @@
+version: "3.6"
+services:
+  pt:
+    # http://10.4.1.245:6884
+    build: .
+    shm_size: 16GB 
+    # image: fastai/fastai:2022-05-29 
+    # image: xx___pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime
+    ports:
+      - "6885:8888"
+    volumes:
+      - ../ml635j:/acup/ml635j
+      - ../cast04c:/acup/cast04c
+      - ../ir4:/acup/ir4
+      - ../imgdata:/acup/imgdata
+      #- ./workspace:/workspace
+      - ./home/dot/jupyter:/root/.jupyter
+    working_dir: /acup  
+
+    command: ["bash", "-c", "source /etc/bash.bashrc && jupyter notebook --notebook-dir=/acup --ip 0.0.0.0 --no-browser --allow-root"]  
+
+    # keep container running..
+    # command: tail -f /dev/null
+    # command: /bin/bash -c "pwd && /bin/bash"
+    # tty: true
+

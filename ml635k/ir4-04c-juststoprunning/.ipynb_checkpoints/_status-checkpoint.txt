@@ -1,0 +1,27 @@
+
+
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+#@  
+#@  
+#@  
+#@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@   2022-06-22[Jun-Wed]09-19AM 
+
+
+With this change, the training starts but just stops before completion.
+
+
+diff ml635e2/ml635k/ir4-runs-ok/model_config.config ml635e2/ml635k/ir4-04c-juststopsrunning/model_config.config
+
+
+root@nuzjma83am:/notebooks# diff ml635e2/ml635k/ir4-runs-ok/model_config.config ml635e2/ml635k/ir4-04c-juststopsrunning/model_config.config
+49,50c49,50
+<         min_dimension: 512
+<         max_dimension: 512
+---
+>         min_dimension: 260
+>         max_dimension: 7990
+root@nuzjma83am:/notebooks# 
+
+
+
+

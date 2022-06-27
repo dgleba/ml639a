@@ -1,0 +1,33 @@
+From 1.11.0-cuda11.3-cudnn8-runtime
+
+# workdir /acup
+
+run mkdir -p /out && \
+  conda list>/out/condalist_$(date +"_%Y.%m.%d_%b-%a_%H.%M.%S")-initial.txt && \
+  pip freeze>/out/requirements_$(date +"_%Y.%m.%d_%b-%a_%H.%M.%S")-initial.txt && \
+  pip freeze>/out/requirements.txt 
+
+# Run apt update &&
+#  DEBIAN_FRONTEND=noninteractive apt-get install -y python3-opencv mc
+
+#tz prompt. dpkg fix...
+# pip install opencv-python
+
+run conda config --set auto_update_conda False
+
+
+# run pip install pycocotools 
+
+
+# run echo jupyter>>/out/requirements.txt
+# run pip install -r /out/requirements.txt
+
+# RUN conda install  jupyter matplotlib 
+
+# RUN conda install -c conda-forge furl
+# run  conda install pytorch torchvision torchaudio cpuonly -c pytorch
+
+run mkdir -p /out && \
+  conda list>/out/condalist_$(date +"_%Y.%m.%d_%b-%a_%H.%M.%S")-02.txt && \
+  pip freeze>/out/requirements_$(date +"_%Y.%m.%d_%b-%a_%H.%M.%S")-02.txt && \
+  pip freeze>/out/requirements02.txt 
