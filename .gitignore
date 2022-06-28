@@ -10,3 +10,5 @@ x/
 model_faster_rcnn_resnet152_1024/
 inference_graph/
 vision/
+ir4/
+
