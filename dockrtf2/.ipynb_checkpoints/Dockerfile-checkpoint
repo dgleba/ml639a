@@ -1,0 +1,52 @@
+# Madhu Kumar for Docker 2022 Posted on Mar 28 • Updated on Apr 1
+
+FROM "ubuntu:20.04"
+
+
+RUN apt-get update 
+# && yes [pipe] apt-get upgrade
+
+run mkdir -p /out && \
+  conda list>/out/condalist_$(date +"_%Y.%m.%d_%b-%a_%H.%M.%S")-initial.txt && \
+  pip freeze>/out/requirements_$(date +"_%Y.%m.%d_%b-%a_%H.%M.%S")-initial.txt && \
+  pip freeze>/out/requirements.txt 
+
+
+RUN mkdir -p /crib/mla
+workdir /crib/mla
+RUN apt-get install -y git python-pip
+RUN pip install --upgrade pip
+RUN pip install tensorflow
+RUN apt-get install -y protobuf-compiler python-pil python-lxml
+RUN pip install jupyter
+RUN pip install matplotlib
+RUN git clone https://github.com/tensorflow/models.git 
+# WORKDIR /tensorflow/models/research
+RUN protoc object_detection/protos/*.proto --python_out=.
+RUN export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
+RUN jupyter notebook --generate-config --allow-root
+#password=root
+RUN echo "c.NotebookApp.password = u'sha1:6a3f528eec40:6e896b6e4828f525a6e20e5411cd1c8075d68619'" >> /root/.jupyter/jupyter_notebook_config.py
+EXPOSE 8888
+
+# run conda config --set auto_update_conda False
+
+run apt -y install mc
+
+# run pip install fastbook wwf  
+# run pip install torch==1.11.0 
+# run pip install torchvision==0.12.0 
+# run pip install pycocotools 
+
+# run echo jupyter>>/out/requirements.txt
+# run pip install -r /out/requirements.txt
+# RUN conda install  jupyter matplotlib 
+# RUN conda install -c conda-forge furl
+# run  conda install pytorch torchvision torchaudio cpuonly -c pytorch
+
+run mkdir -p /out && \
+  conda list>/out/condalist_$(date +"_%Y.%m.%d_%b-%a_%H.%M.%S")-02.txt && \
+  pip freeze>/out/requirements_$(date +"_%Y.%m.%d_%b-%a_%H.%M.%S")-02.txt && \
+  pip freeze>/out/requirements02.txt 
+
+CMD ["jupyter", "notebook", "--allow-root", "--notebook-dir=/crib", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
