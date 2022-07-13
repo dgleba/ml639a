@@ -4,13 +4,13 @@ services:
     # http://10.4.1.245:6884
     # https://ju.172.83.13.204.nip.io
     build: .
-    shm_size: 20GB 
+    shm_size: 16GB 
     # image: fastai/fastai:2022-05-29 
     # image: xx___pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime
     ports:
       - "6885:8888"
     volumes:
-      - ../mla:/crib/mla
+      - ../ml639b:/crib/mla
       #- ../ir4:/crib/ir4
       - ../imgdata:/crib/imgdata
       #- ./workspace:/workspace
