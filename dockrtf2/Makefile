@@ -6,8 +6,9 @@ prep:
 	mkdir -p acup
 
 permm:  
+	docker-compose exec tf 	bash -c " chmod -R ug+rw,o+rwx ../imgdata;  "
 	#docker-compose exec tf 	bash -c " chmod -R ug+rw,o+rwx ./notebook/models;  "
-	docker-compose exec pyt 	bash -c " chmod -R ug+rw,o+rwx /root/.jupyter;  "
+	#docker-compose exec pyt 	bash -c " chmod -R ug+rw,o+rwx /root/.jupyter;  "
 
 cpa:
 	# Copy files from container

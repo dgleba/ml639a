@@ -51,51 +51,51 @@ services:
   #   networks:
   #     - sister
 
-  jproxy:
-  # docker-compose pull nproxy to update...
-    image: nginxproxy/nginx-proxy:alpine
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - ./vol/nginx/certs:/etc/nginx/certs:ro
-      - ./vol/nginx/html:/usr/share/nginx/html
-      - ./vol/nginx/vhost.d:/etc/nginx/vhost.d:ro
-      # - ./vol/nginx/conf.d:/etc/nginx/conf.d/
-      # - ./vol/nginx/conf.d/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
-      # I added to the bottom of the template and commented it.
-      # - ./jwilder/nginx2.tmpl:/app/nginx.tmpl
-      # Now lines can be added to the bottom of the generated config from files from here..
-      # - ./vol/jwilder/nginx-override:/etc/nginx/jwilder-nginx-override
-    labels:
-      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
-    restart: always
-    # networks:
-      # - sister
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100k"
-        max-file: "10"
+  # jproxy:
+  # # docker-compose pull nproxy to update...
+  #   image: nginxproxy/nginx-proxy:alpine
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - /var/run/docker.sock:/tmp/docker.sock:ro
+  #     - ./vol/nginx/certs:/etc/nginx/certs:ro
+  #     - ./vol/nginx/html:/usr/share/nginx/html
+  #     - ./vol/nginx/vhost.d:/etc/nginx/vhost.d:ro
+  #     # - ./vol/nginx/conf.d:/etc/nginx/conf.d/
+  #     # - ./vol/nginx/conf.d/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
+  #     # I added to the bottom of the template and commented it.
+  #     # - ./jwilder/nginx2.tmpl:/app/nginx.tmpl
+  #     # Now lines can be added to the bottom of the generated config from files from here..
+  #     # - ./vol/jwilder/nginx-override:/etc/nginx/jwilder-nginx-override
+  #   labels:
+  #     com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
+  #   restart: always
+  #   # networks:
+  #     # - sister
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "100k"
+  #       max-file: "10"
 
-  lets:
-    image: nginxproxy/acme-companion
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./vol/nginx/vhost.d:/etc/nginx/vhost.d
-      - ./vol/nginx/certs:/etc/nginx/certs:rw
-      - ./vol/nginx/html:/usr/share/nginx/html
-    restart: always
-    # networks:
-      # - sister
-    depends_on:
-      - jproxy
-    # links will share the volumes between containers.
-    links:
-      - jproxy
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "100k"
-        max-file: "10"
+  # lets:
+  #   image: nginxproxy/acme-companion
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock:ro
+  #     - ./vol/nginx/vhost.d:/etc/nginx/vhost.d
+  #     - ./vol/nginx/certs:/etc/nginx/certs:rw
+  #     - ./vol/nginx/html:/usr/share/nginx/html
+  #   restart: always
+  #   # networks:
+  #     # - sister
+  #   depends_on:
+  #     - jproxy
+  #   # links will share the volumes between containers.
+  #   links:
+  #     - jproxy
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "100k"
+  #       max-file: "10"

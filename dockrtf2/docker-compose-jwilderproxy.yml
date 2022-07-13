@@ -1,0 +1,101 @@
+version: "3.6"
+services:
+  tf:
+    # http://10.4.1.245:6884
+    # https://ju.172.83.13.204.nip.io
+    build: .
+    shm_size: 16GB 
+    # image: fastai/fastai:2022-05-29 
+    # image: xx___pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime
+    ports:
+      - "6885:8888"
+    volumes:
+      - ../ml639b:/crib/mla
+      #- ../ir4:/crib/ir4
+      - ../imgdata:/crib/imgdata
+      #- ./workspace:/workspace
+      - ./home/dot/jupyter:/root/.jupyter
+    working_dir: /crib/mla
+    environment:
+        - VIRTUAL_HOST=ju.172.83.13.204.nip.io
+        - VIRTUAL_PORT=8888
+        - LETSENCRYPT_HOST=ju.172.83.13.204.nip.io
+        - LETSENCRYPT_EMAIL=dgleba@gmail.com
+    
+    command: ["bash", "-c", "source /etc/bash.bashrc && jupyter notebook --notebook-dir=/crib --ip 0.0.0.0 --no-browser --allow-root"]  
+
+    # keep container running..
+    # command: tail -f /dev/null
+    # command: /bin/bash -c "pwd && /bin/bash"
+    # tty: true
+
+  
+  # web:
+  #   # to test this jwilder/LE
+  #   # http://web-108-168-7-24.nip.io/
+  #   # https://web.198.144.183.160.nip.io/
+  #   image: nginx:1.21-alpine
+  #   # container_name: example-webapp
+  #   volumes:
+  #     - ./site/weba/nindex.html:/usr/share/nginx/html/index.html
+  #   expose:
+  #     - "80"
+  #   environment:
+  #     - VIRTUAL_HOST=web.198.144.183.160.nip.io
+  #     #- VIRTUAL_HOST=web.c617eef4.nip.io
+  #     - VIRTUAL_PORT=80
+  #     - LETSENCRYPT_HOST=web.198.144.183.160.nip.io
+  #     #- LETSENCRYPT_HOST=web.c617eef4.nip.io
+  #     - LETSENCRYPT_EMAIL=dgleba@gmail.com
+  #   restart: always
+  #   networks:
+  #     - sister
+
+  jproxy:
+  # docker-compose pull nproxy to update...
+    image: nginxproxy/nginx-proxy:alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./vol/nginx/certs:/etc/nginx/certs:ro
+      - ./vol/nginx/html:/usr/share/nginx/html
+      - ./vol/nginx/vhost.d:/etc/nginx/vhost.d:ro
+      # - ./vol/nginx/conf.d:/etc/nginx/conf.d/
+      # - ./vol/nginx/conf.d/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
+      # I added to the bottom of the template and commented it.
+      # - ./jwilder/nginx2.tmpl:/app/nginx.tmpl
+      # Now lines can be added to the bottom of the generated config from files from here..
+      # - ./vol/jwilder/nginx-override:/etc/nginx/jwilder-nginx-override
+    labels:
+      com.github.jrcs.letsencrypt_nginx_proxy_companion.nginx_proxy: "true"
+    restart: always
+    # networks:
+      # - sister
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100k"
+        max-file: "10"
+
+  lets:
+    image: nginxproxy/acme-companion
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./vol/nginx/vhost.d:/etc/nginx/vhost.d
+      - ./vol/nginx/certs:/etc/nginx/certs:rw
+      - ./vol/nginx/html:/usr/share/nginx/html
+    restart: always
+    # networks:
+      # - sister
+    depends_on:
+      - jproxy
+    # links will share the volumes between containers.
+    links:
+      - jproxy
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100k"
+        max-file: "10"

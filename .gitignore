@@ -1,6 +1,10 @@
 *.zip
 *.pth
-imgdata/
+
+
+imgdata/*
+!imgdata/.keep
+
 savedmodel/
 train.record
 test.record
@@ -13,3 +17,5 @@ vision/
 ir4/
 vol/nginx/certs/
 certs/
+
+.ipynb_checkpoints/
