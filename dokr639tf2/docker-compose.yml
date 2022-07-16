@@ -3,26 +3,26 @@ version: "3.6"
 services:
   tf:
     # http://10.4.1.245:6884
-    # https://ju.172.83.13.39.nip.io
+    # https://jpy.172.83.13.39.nip.io
     build: .
-    shm_size: 64GB 
+    shm_size: 96GB 
     # image: fastai/fastai:2022-05-29 
     # image: xx___pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime
     ports:
       - "6885:8888"
-    user: 1000:1000
+    #user: 1000:1000
     volumes:
-      - ./ml639b:/crib/mla
+      - ./ml639b:/home/albe/mla
       #- ../ir4:/crib/ir4
-      - ../imgdata:/crib/imgdata
+      - ../imgdata:/home/albe/imgdata
       #- ./workspace:/workspace
       #- ./home/dot/jupyter:/root/.jupyter
       - ./home/dot/jupyter:/home/albe/.jupyter
-    working_dir: /crib/mla
+    working_dir: /home/albe
     environment:
-        - VIRTUAL_HOST=ju.172.83.13.39.nip.io
+        - VIRTUAL_HOST=jpy.172.83.13.39.nip.io
         - VIRTUAL_PORT=8888
-        - LETSENCRYPT_HOST=ju.172.83.13.39.nip.io
+        - LETSENCRYPT_HOST=jpy.172.83.13.39.nip.io
         - LETSENCRYPT_EMAIL=dgleba@gmail.com
     deploy:
       resources:
@@ -31,7 +31,7 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
-    command: ["bash", "-c", "source /etc/bash.bashrc && jupyter notebook --notebook-dir=/crib --ip 0.0.0.0 --no-browser --allow-root"]  
+    command: ["bash", "-c", "source /etc/bash.bashrc && jupyter notebook --notebook-dir=/home/albe/mla --ip 0.0.0.0 --no-browser --allow-root"]  
 
     # keep container running..
     # command: tail -f /dev/null
