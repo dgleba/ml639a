@@ -1,13 +1,14 @@
 # Madhu Kumar for Docker 2022 Posted on Mar 28 • Updated on Apr 1
-FROM "ubuntu:20.04"
+#FROM "ubuntu:20.04"
+from tensorflow/tensorflow:2.8.2-gpu-jupyter
 
-RUN apt-get update 
+# RUN apt-get update 
 # && yes [pipe] apt-get upgrade
 
 RUN mkdir -p /crib/mla
 workdir /crib/mla
-RUN DEBIAN_FRONTEND=noninteractive  apt-get install -y git python3-pip python-is-python3 protobuf-compiler python-pil python-lxml mc
-RUN pip3 install --upgrade pip 
+#RUN apt-get update && DEBIAN_FRONTEND=noninteractive  apt-get install -y git python3-pip python-is-python3 protobuf-compiler python-pil python-lxml mc
+#RUN pip3 install --upgrade pip 
 
 # Run alias pip=pip3 && alias python=python3
 
@@ -16,7 +17,7 @@ run mkdir -p /out && \
   pip freeze>/out/requirements.txt 
   #conda list>/out/condalist_$(date +"_%Y.%m.%d_%b-%a_%H.%M.%S")-initial.txt && \
 
-RUN pip install tensorflow==2.8.0 jupyter jupyterlab matplotlib
+#RUN pip install tensorflow==2.8.0 jupyter jupyterlab matplotlib
 #RUN apt-get install -y 
 #RUN pip install 
 #RUN git clone https://github.com/tensorflow/models.git 
@@ -39,6 +40,14 @@ EXPOSE 8888
 # RUN conda install -c conda-forge furl
 # run  conda install pytorch torchvision torchaudio cpuonly -c pytorch
 
+add ml639b .
+
+Run pwd; cd models/research/ && \
+cp object_detection/packages/tf2/setup.py . && \
+python -m pip install . 
+#; export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
+
+
 run mkdir -p /out && \
   pip freeze>/out/requirements_$(date +"_%Y.%m.%d_%b-%a_%H.%M.%S")-02.txt && \
   pip freeze>/out/requirements02.txt 
@@ -46,8 +55,6 @@ run mkdir -p /out && \
 
 #RUN pwd; cd models/research; protoc object_detection/protos/*.proto --python_out=.
 
-Run pwd; cd models/research/ && \
-cp object_detection/packages/tf2/setup.py . && \
-python -m pip install . ; export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
+RUN groupadd -r albe -g 1000 && useradd -G sudo -u 1000  -m -g albe albe
 
 CMD ["jupyter", "notebook", "--allow-root", "--notebook-dir=/crib", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
