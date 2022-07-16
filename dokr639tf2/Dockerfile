@@ -56,5 +56,6 @@ run mkdir -p /out && \
 #RUN pwd; cd models/research; protoc object_detection/protos/*.proto --python_out=.
 
 RUN groupadd -r albe -g 1000 && useradd -G sudo -u 1000  -m -g albe albe
+user albe
 
 CMD ["jupyter", "notebook", "--allow-root", "--notebook-dir=/crib", "--ip=0.0.0.0", "--port=8888", "--no-browser"]
