@@ -3,26 +3,27 @@ version: "3.6"
 services:
   tf:
     # http://10.4.1.245:6884
-    # https://jpy.172.83.13.39.nip.io
+    # https://jpy.172.83.15.56.nip.io
     build: .
     shm_size: 96GB 
     # image: fastai/fastai:2022-05-29 
     # image: xx___pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime
     ports:
-      - "6885:8888"
+      - "6888:8888"
+      - "6806:6006"
     #user: 1000:1000
     volumes:
       - ./ml639b:/home/albe/mla
       #- ../ir4:/crib/ir4
       - ../imgdata:/home/albe/imgdata
       #- ./workspace:/workspace
-      #- ./home/dot/jupyter:/root/.jupyter
-      - ./home/dot/jupyter:/home/albe/.jupyter
+      - ./home/dot/jupyter:/root/.jupyter
+      #- ./home/dot/jupyter:/home/albe/.jupyter
     working_dir: /home/albe
     environment:
-        - VIRTUAL_HOST=jpy.172.83.13.39.nip.io
+        - VIRTUAL_HOST=jpy.172.83.15.56.nip.io
         - VIRTUAL_PORT=8888
-        - LETSENCRYPT_HOST=jpy.172.83.13.39.nip.io
+        - LETSENCRYPT_HOST=jpy.172.83.15.56.nip.io
         - LETSENCRYPT_EMAIL=dgleba@gmail.com
     deploy:
       resources:
@@ -71,6 +72,7 @@ services:
       - ./vol/nginx/certs:/etc/nginx/certs:ro
       - ./vol/nginx/html:/usr/share/nginx/html
       - ./vol/nginx/vhost.d:/etc/nginx/vhost.d:ro
+      - "./vol/nginx/confd/largebody.conf:/etc/nginx/conf.d/largebody.conf"
       # - ./vol/nginx/conf.d:/etc/nginx/conf.d/
       # - ./vol/nginx/conf.d/my_proxy.conf:/etc/nginx/conf.d/my_proxy.conf:ro
       # I added to the bottom of the template and commented it.

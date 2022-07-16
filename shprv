@@ -399,5 +399,11 @@ EOF
 
 
 
+# run docker without sudo.. 
+sudo usermod -aG docker $(whoami)
+sudo usermod -aG docker albe
+sudo usermod -aG docker ubuntu
+# su - ${USER}
+
 
 
